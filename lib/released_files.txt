@@ -1,0 +1,2 @@
+AspNetInsight4.dll
+AspNetInsight.Installer.exe

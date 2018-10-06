@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Weavers>
+  <Costura CreateTemporaryAssemblies='true'
+           LoadAtModuleInit='true'
+           DisableCompression='true'>
+    <Unmanaged32Assemblies>
+      SQLite.Interop
+    </Unmanaged32Assemblies>
+    <Unmanaged64Assemblies>
+      SQLite.Interop
+    </Unmanaged64Assemblies>
+    <ExcludeAssemblies>
+      AspNetInsight.Abstract
+      System.Data.SQLite
+      System.Data.SQLite.Linq
+    </ExcludeAssemblies>
+  </Costura>
+</Weavers>

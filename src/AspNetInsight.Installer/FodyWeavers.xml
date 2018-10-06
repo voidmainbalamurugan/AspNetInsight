@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Weavers>
+  <Costura CreateTemporaryAssemblies='true'
+           LoadAtModuleInit='true'
+           DisableCompression='true'>
+    <IncludeAssemblies>
+      AspNetInsight4
+      Microsoft.Web.Administration
+    </IncludeAssemblies>
+  </Costura>
+</Weavers>
