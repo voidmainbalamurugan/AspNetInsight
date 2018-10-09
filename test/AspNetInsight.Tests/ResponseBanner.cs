@@ -17,9 +17,9 @@ namespace AspNetInsight.Tests
         public void GeneratedBanner_with_empty_template()
         {
             // arrange
-            var tt = string.Empty;
-            tempBanner banner = new tempBanner() { template = tt };
-            tempBanner banner_ws = new tempBanner() { template = "   " };
+            string tt = null;
+            TempBanner banner = new TempBanner() { template = tt };
+            TempBanner banner_ws = new TempBanner() { template = "   " };
             BasicSts data = new BasicSts(20);
 
             // act and assert
@@ -32,7 +32,7 @@ namespace AspNetInsight.Tests
         {
             // arrange
             var tt = "[RECENT]-[MIN]-[AVG]-[MAX]-[TOTAL]";
-            tempBanner banner = new tempBanner() { template = tt };
+            TempBanner banner = new TempBanner() { template = tt };
             BasicSts data = new BasicSts(20);
 
             // act
@@ -51,7 +51,7 @@ namespace AspNetInsight.Tests
         {
             // arrange
             var tt = "[RECENT1]-[MIN1]-[AVG2]-[MAX23]-[TOTAL5]";
-            tempBanner banner = new tempBanner() { template = tt };
+            TempBanner banner = new TempBanner() { template = tt };
             BasicSts data = new BasicSts(20);
 
             // act
@@ -70,7 +70,7 @@ namespace AspNetInsight.Tests
         {
             // arrange
             var tt = "[RECENT]-[AVG]-[MAX]-[TOTAL]-[MIN]";
-            tempBanner banner = new tempBanner() { template = tt };
+            TempBanner banner = new TempBanner() { template = tt };
             BasicSts data = new BasicSts()
             {
                 Total = 5,
@@ -96,7 +96,7 @@ namespace AspNetInsight.Tests
         {
             // arrange
             var tt = "{RECENT}-{AVG}-{MAX}-{TOTAL}-{MIN}";
-            tempBanner banner = new tempBanner("{", "}") { template = tt };
+            TempBanner banner = new TempBanner("{", "}") { template = tt };
             BasicSts data = new BasicSts()
             {
                 Total = 5,
@@ -117,17 +117,16 @@ namespace AspNetInsight.Tests
             Assert.True(banner.Suffix == "}");
         }
 
-        private class tempBanner : ResponseBanner
+        class TempBanner : ResponseBanner
         {
             public string template { get; set; }
 
-            public tempBanner() { }
-            public tempBanner(string prefix, string suffix)
+            public TempBanner() { }
+            public TempBanner(string prefix, string suffix)
                 :base(prefix, suffix)
             {
 
             }
-
             protected override string GetTemplateText() => template;
         }
     }

@@ -17,6 +17,7 @@ namespace AspNetInsight
 
         protected const string _prefix = "[";
         protected const string _suffix = "]";
+        const string _ex_msg = "GetTemplateText can not be empty or null";
 
         protected ResponseBanner(string prefix = _prefix, string suffix = _suffix)
         {
@@ -35,7 +36,8 @@ namespace AspNetInsight
         /// <returns></returns>
         public virtual string GeneratedBanner(BasicSts Data)
         {
-            TemplateText = GetTemplateText();
+            TemplateText = GetTemplateText()?? throw new ArgumentNullException(_ex_msg);
+
             return UpdateTemplate(Data);
         }
 
