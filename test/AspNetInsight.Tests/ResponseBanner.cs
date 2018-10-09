@@ -17,8 +17,7 @@ namespace AspNetInsight.Tests
         public void GeneratedBanner_with_empty_template()
         {
             // arrange
-            string tt = null;
-            TempBanner banner = new TempBanner() { template = tt };
+            TempBanner banner = new TempBanner() { template = null };
             TempBanner banner_ws = new TempBanner() { template = "   " };
             BasicSts data = new BasicSts(20);
 
@@ -121,13 +120,14 @@ namespace AspNetInsight.Tests
         {
             public string template { get; set; }
 
-            public TempBanner() { }
+            public TempBanner()
+            :this(null, null){ }
             public TempBanner(string prefix, string suffix)
                 :base(prefix, suffix)
             {
 
             }
-            protected override string GetTemplateText() => template;
+            protected override string GetTemplateText() => string.Copy(template);
         }
     }
 }

@@ -36,7 +36,10 @@ namespace AspNetInsight
         /// <returns></returns>
         public virtual string GeneratedBanner(BasicSts Data)
         {
-            TemplateText = GetTemplateText()?? throw new ArgumentNullException(_ex_msg);
+            TemplateText = this.GetTemplateText();
+
+            if (string.IsNullOrWhiteSpace(TemplateText))
+                throw new ArgumentNullException(_ex_msg);
 
             return UpdateTemplate(Data);
         }
@@ -47,7 +50,8 @@ namespace AspNetInsight
                 throw new ArgumentNullException(nameof(data));
 
             var text = string.Copy(TemplateText);
-            foreach(var kvp in data.GetDataAsKvp())
+
+            foreach (var kvp in data.GetDataAsKvp())
             {
                 text = text.Replace(Prefix + kvp.Key + Suffix, kvp.Value);
             }
