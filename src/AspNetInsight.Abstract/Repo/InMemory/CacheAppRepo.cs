@@ -13,9 +13,9 @@ namespace AspNetInsight.Repo
     /// </summary>
     public class CacheAppRepo : IAppRepo
     {
-        private static long _appid = 1;
+        static long _appid = 1;
 
-        private ConcurrentBag<App> ThisRepo
+        ConcurrentBag<App> ThisRepo
         {
             get
             {
@@ -62,7 +62,7 @@ namespace AspNetInsight.Repo
             if (crtn.Any())
                 return crtn.DeepCopy();
 
-            return null;
+            return default(IEnumerable<App>);
         }
 
         public IEnumerable<App> GetAppByUrl(string url)
@@ -75,7 +75,7 @@ namespace AspNetInsight.Repo
             if (crtn.Any())
                 return crtn.DeepCopy();
 
-            return null;
+            return default(IEnumerable<App>);
         }
 
         public App New(App toAdd)

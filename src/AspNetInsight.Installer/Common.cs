@@ -15,9 +15,9 @@ namespace AspNetInsight.Installer
     public static class Common
     {
         public const string _httpModuleName = "si_ResponseTracker";
-        public static string _assemblyName = "AspNetInsight4";
-        public static string _extn = "dll";
-        public const string _installerName = "consoleApp.exe";
+        public const string _assemblyName = "AspNetInsight4";
+        public const string _extn = "dll";
+        public const string _installerName = "AspNetInsight.Installer.exe";
         public const string _appPoolAttribute = "applicationPool";
         const string _classicPath = "system.web/httpModules";
         const string _integratedPath = "system.webServer/modules";
@@ -169,9 +169,9 @@ namespace AspNetInsight.Installer
 
         internal static bool IsAdmin()
         {
-            var name = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            var name = WindowsIdentity.GetCurrent().Name;
 
-            var isAdmin = Common.IsAdministrator(name);
+            var isAdmin = IsAdministrator(name);
             return isAdmin;
         }
 
@@ -283,13 +283,13 @@ namespace AspNetInsight.Installer
         public static string[] TrimAll(this string[] values)
         {
             if (values == null)
-                return null;
+                return default(string[]);
 
             var lst = values.ToList();
             lst.RemoveAll(s => string.IsNullOrWhiteSpace(s));
 
             if (!lst.Any())
-                return null;
+                return default(string[]);
 
             return lst.ConvertAll(s => s.Trim()).ToArray();
         }

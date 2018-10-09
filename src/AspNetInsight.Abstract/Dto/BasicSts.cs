@@ -13,9 +13,9 @@
 
         public BasicSts()
         {
-            Min = -1;
-            Avg = -1;
-            Max = -1;
+            Min = double.MinValue;
+            Avg = double.MinValue;
+            Max = double.MinValue;
             Total = 0;
         }
         public BasicSts(double current)

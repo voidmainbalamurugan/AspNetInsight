@@ -12,9 +12,9 @@ namespace AspNetInsight.Repo
     /// </summary>
     public class CacheResponseLog : ILogRepo<ResponseLog>
     {
-        private static long _responseLogid = 1;
+        static long _responseLogid = 1;
 
-        private ConcurrentBag<ResponseLog> ThisRepo
+        ConcurrentBag<ResponseLog> ThisRepo
         {
             get
             {
@@ -35,7 +35,7 @@ namespace AspNetInsight.Repo
 
             if (rtn.Any())
                 return rtn.DeepCopy();
-            return null;
+            return default(IEnumerable<ResponseLog>);
         }
 
         public IEnumerable<ResponseLog> GetByAppId(long appId, DateTime from, DateTime to)
@@ -45,7 +45,7 @@ namespace AspNetInsight.Repo
 
             if (rtn.Any())
                 return rtn.DeepCopy();
-            return null;
+            return default(IEnumerable<ResponseLog>);
         }
 
         public void Log(ResponseLog dataToLog)

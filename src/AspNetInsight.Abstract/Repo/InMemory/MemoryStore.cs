@@ -15,9 +15,8 @@ namespace AspNetInsight.Repo
     /// </summary>
     internal static class MemoryStore
     {
-        private static Cache _repo { get; set; }
-        private const string _key_AppRepo = "_si_appRepo_";
-        private static Dictionary<Type, string> _keys = new Dictionary<Type, string>()
+        static Cache _repo { get; set; }
+        static readonly Dictionary<Type, string> _keys = new Dictionary<Type, string>()
         {
             { typeof(App), "_si_appRepo_" },
             { typeof(AppResponseTime), "_si_appRepo_response_" },

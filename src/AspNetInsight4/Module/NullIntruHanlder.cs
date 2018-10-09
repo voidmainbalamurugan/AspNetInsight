@@ -15,11 +15,29 @@ namespace AspNetInsight4.Module
     public class NullIntruHanlder : IInstrumentationHanlder
     {
         public App CurrentApp { get; protected set; }
-        public void LogResponseData(HttpApplication app) { }
-        public void PostHanlderExecution(HttpApplication app) { }
-        public void PreHanlderExecution(HttpApplication app) { }
-        public void UpdateResponse(HttpApplication app) { }
-        public void BeginRequest(HttpApplication app) { }
-        public void HanldeDynamicContent(HttpApplication app) { }
+        public void LogResponseData(HttpApplication app)
+        {
+            // Method intentionally left empty.
+        }
+        public void PostHanlderExecution(HttpApplication app)
+        {
+            // Method intentionally left empty.
+        }
+        public void PreHanlderExecution(HttpApplication app)
+        {
+            // Method intentionally left empty.
+        }
+        public void UpdateResponse(HttpApplication app)
+        {
+            // Method intentionally left empty.
+        }
+        public void BeginRequest(HttpApplication app)
+        {
+            // Method intentionally left empty.
+        }
+        public void HanldeDynamicContent(HttpApplication app)
+        {
+            // Method intentionally left empty.
+        }
     }
 }

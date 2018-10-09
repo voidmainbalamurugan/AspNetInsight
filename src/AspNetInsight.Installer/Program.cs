@@ -63,8 +63,10 @@ namespace AspNetInsight.Installer
         {
             if (_logToFile)
             {
-                var lstnr = new TextWriterTraceListener(_logFileName);
-                lstnr.TraceOutputOptions = TraceOptions.DateTime;
+                var lstnr = new TextWriterTraceListener(_logFileName)
+                {
+                    TraceOutputOptions = TraceOptions.DateTime
+                };
                 Trace.Listeners.Add(lstnr);
                 Trace.AutoFlush = true;
                 Trace.IndentSize = 5;

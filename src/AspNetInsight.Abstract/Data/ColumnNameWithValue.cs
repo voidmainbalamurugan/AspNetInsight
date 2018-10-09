@@ -11,17 +11,17 @@ namespace AspNetInsight.Data
     {
         public string Name { get; set; }
         public object Value { get; set; }
-        public DbType dBType { get; set; }
+        public DbType DataType { get; set; }
         public const string ParamPrefix4Update = "@u";
         public const string ParamPrefix4Insert = "@i";
 
-        public ColumnNameWithValue(string name, object value, DbType type)
+        protected ColumnNameWithValue(string name, object value, DbType type)
         {
             Name = string.IsNullOrWhiteSpace(name) ? throw new ArgumentNullException(nameof(name))
                 : name.Trim();
             Value = value ?? throw new ArgumentNullException(nameof(value));
 
-            dBType = type;
+            DataType = type;
         }
 
         public override string ToString()

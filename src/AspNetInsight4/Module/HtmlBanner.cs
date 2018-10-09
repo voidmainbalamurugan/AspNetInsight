@@ -40,18 +40,21 @@ namespace AspNetInsight4.Module
         /// <summary>
         /// Generates the widget html from configured template
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="Data"></param>
         /// <returns></returns>
-        public override string GeneratedBanner(BasicSts data)
+        public override string GeneratedBanner(BasicSts Data)
         {
-            var banner = base.GeneratedBanner(data);
-
-            var curl = string.Format("{0}://{1}/",
-                HttpContext.Current.Request.Url.Scheme,
-                HttpContext.Current.Request.Url.Authority);
-            banner = banner.Replace(_url, curl);
+            var banner = base.GeneratedBanner(Data);
+            banner = banner.Replace(_url, GetCurrentUrl());
 
             return banner;
+        }
+
+        protected virtual string GetCurrentUrl()
+        {
+            return string.Format("{0}://{1}/",
+                HttpContext.Current.Request.Url.Scheme,
+                HttpContext.Current.Request.Url.Authority);
         }
     }
 }

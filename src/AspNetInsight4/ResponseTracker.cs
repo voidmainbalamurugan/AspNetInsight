@@ -37,27 +37,27 @@ namespace AspNetInsight4
             context.EndRequest += new EventHandler(OnEndRequest);
         }
 
-        private void OnBeginRequest(Object source, EventArgs e)
+        void OnBeginRequest(Object source, EventArgs e)
         {
             _handler.BeginRequest(source as HttpApplication);
         }
         
-        private void OnPostMapRequestHandler(Object source, EventArgs e)
+        void OnPostMapRequestHandler(Object source, EventArgs e)
         {
             _handler.HanldeDynamicContent(source as HttpApplication);
         }
 
-        private void OnPreRequestHandlerExecute(Object source, EventArgs e)
+        void OnPreRequestHandlerExecute(Object source, EventArgs e)
         {
             _handler.PreHanlderExecution(source as HttpApplication);
         }
 
-        private void OnPostRequestHandlerExecute(Object source, EventArgs e)
+        void OnPostRequestHandlerExecute(Object source, EventArgs e)
         {
             _handler.PostHanlderExecution(source as HttpApplication);
         }
 
-        private void OnEndRequest(Object source, EventArgs e)
+        void OnEndRequest(Object source, EventArgs e)
         {
             var app = source as HttpApplication;
             _handler.LogResponseData(app);
@@ -71,7 +71,7 @@ namespace AspNetInsight4
 
         #endregion
 
-        private IInstrumentationHanlder _handler { get; set; }
+        IInstrumentationHanlder _handler { get; set; }
 
         public ResponseTracker()
         {

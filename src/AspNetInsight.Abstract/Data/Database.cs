@@ -14,8 +14,11 @@ namespace AspNetInsight.Data
     /// </summary>
     public abstract class Database : IDisposable
     {
-        private DbConnection _connection { get; set; }
-        private Type _dtype { get; set; }
+        const string _tableDefSqlPropName = nameof(InsightTable<object>.TableDefinitionSQL); //"TableDefinitionSQL";
+        const string _orderPropName = nameof(InsightTable<object>.CreationOrder); // "CreationOrder";
+
+        DbConnection _connection { get; set; }
+        Type _dtype { get; set; }
         public static bool DBCreated { get; private set; }
 
         protected abstract string GetConnectionString();
@@ -67,32 +70,34 @@ namespace AspNetInsight.Data
                 CreateTable(tables);
         }
 
-        private static IEnumerable<string> GetCommandText(IEnumerable<Type> types)
+        static IEnumerable<string> GetCommandText(IEnumerable<Type> types)
         {
             if (types == null)
                 throw new ArgumentNullException(nameof(types));
 
-            Console.WriteLine("inside GetCommandText.");
             var lst = new List<Tuple<int, string>>();
+            object instance, value;
+            string txt = string.Empty;
+            int order;
             foreach (var t in types)
             {
                 if (t == null)
                     continue;
 
-                var instance = Activator.CreateInstance(t);
-                var value = instance.GetType()
-                            .GetProperty("TableDefinitionSQL",
-                                BindingFlags.NonPublic | BindingFlags.Instance)
+                instance = Activator.CreateInstance(t);
+                value = instance.GetType()
+                            .GetProperty(_tableDefSqlPropName,
+                                BindingFlags.Public | BindingFlags.Instance)
                                 .GetValue(instance, null);
                 if (value == null)
                     continue;
 
-                var txt = Convert.ToString(value);
+                txt = Convert.ToString(value);
                 if (string.IsNullOrWhiteSpace(txt))
                     continue;
-                var order = Convert.ToInt32(instance.GetType()
-                            .GetProperty("CreationOrder",
-                                BindingFlags.NonPublic | BindingFlags.Instance)
+                order = Convert.ToInt32(instance.GetType()
+                            .GetProperty(_orderPropName,
+                                BindingFlags.Public | BindingFlags.Instance)
                                 .GetValue(instance, null));
                 lst.Add(new Tuple<int, string>(order, txt));
             }
@@ -105,10 +110,9 @@ namespace AspNetInsight.Data
             if (types == null)
                 throw new ArgumentNullException(nameof(types));
 
-            Console.WriteLine("inside CreateTable.");
             using (var con = GetOpenConnection())
             {
-                List<string> txtAll = GetCommandText(types).ToList();
+                var txtAll = GetCommandText(types).ToList();
                 using (var trans = con.BeginTransaction())
                 {
                     try
@@ -141,10 +145,10 @@ namespace AspNetInsight.Data
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
 
-            command.Connection = _connection;
-            var adapter = GetDataAdapter(command);
             var data = new DataSet();
-            adapter.Fill(data);
+            command.Connection = _connection;
+            GetDataAdapter(command).Fill(data);
+
             return data;
         }
 

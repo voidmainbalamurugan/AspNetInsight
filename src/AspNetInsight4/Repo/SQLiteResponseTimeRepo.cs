@@ -28,8 +28,8 @@ namespace AspNetInsight4.Repo
             nameof(AppResponseTime.Total), nameof(AppResponseTime.Slice), nameof(AppResponseTime.ModifiedDate)
         };
 
-        protected override int CreationOrder => 1;
-        protected override string TableDefinitionSQL
+        public override int CreationOrder => 1;
+        public override string TableDefinitionSQL
             => @"CREATE TABLE IF NOT EXISTS [AppResponseTime] (
               [Id] integer NOT NULL PRIMARY KEY AUTOINCREMENT
             , [Recent] double NOT NULL
@@ -56,7 +56,7 @@ namespace AspNetInsight4.Repo
 	            WHERE Id = old.Id and AppId = old.AppId;
             END;";
 
-        ICommandTextBuilder _commandHelper = new SQLiteCommon();
+        readonly ICommandTextBuilder _commandHelper = new SQLiteCommon();
         protected override ICommandTextBuilder CommandHelper => _commandHelper;
         SQLiteAppRepo _appRepo { get; set; }
 

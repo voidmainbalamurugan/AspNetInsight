@@ -12,10 +12,10 @@ namespace AspNetInsight.Repo
     /// </summary>
     public class CacheResponseTimeRepo : IResponseRepo<AppResponseTime>
     {
-        private static long _responseTimeid = 1;
-        private IAppRepo _appRepo;
+        static long _responseTimeid = 1;
+        IAppRepo _appRepo;
 
-        private ConcurrentBag<AppResponseTime> ThisRepo
+        ConcurrentBag<AppResponseTime> ThisRepo
         {
             get
             {
@@ -37,7 +37,7 @@ namespace AspNetInsight.Repo
                 rt => rt.Id == id);
             if (rtime.Any())
                 return rtime.FirstOrDefault().DeepCopy();
-            return null;
+            return default(AppResponseTime);
         }
 
         public AppResponseTime GetAppDataById(long appId)
@@ -46,7 +46,7 @@ namespace AspNetInsight.Repo
                 rt => rt.AppId == appId);
             if (rtime.Any())
                 return rtime.FirstOrDefault().DeepCopy();
-            return null;
+            return default(AppResponseTime);
         }
 
         public AppResponseTime AddAppData(AppResponseTime appData)
@@ -61,7 +61,7 @@ namespace AspNetInsight.Repo
             return data;
         }
 
-        public AppResponseTime UpdateRecentByAppId(long appId, double recentTime)
+        public AppResponseTime UpdateRecentByAppId(long appId, double recent)
         {
             var app = _appRepo.GetApp(appId);
             if (app == null)
@@ -81,10 +81,10 @@ namespace AspNetInsight.Repo
                         AppId = appId,
                         Id = _responseTimeid++,
                         ApplicationDetails = app,
-                        Recent = recentTime,
-                        Min = recentTime,
-                        Avg = recentTime,
-                        Max = recentTime,
+                        Recent = recent,
+                        Min = recent,
+                        Avg = recent,
+                        Max = recent,
                         Slice = TimeSlice.Milliseconds,
                         Total = 1,
                         ModifiedDate = DateTime.UtcNow
@@ -96,7 +96,7 @@ namespace AspNetInsight.Repo
                 else
                 {
                     rtn = cr.FirstOrDefault();
-                    rtn.Update(recentTime);
+                    rtn.Update(recent);
                 }
             }
 

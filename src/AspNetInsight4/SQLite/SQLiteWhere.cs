@@ -16,7 +16,7 @@ namespace AspNetInsight4.SQLite
 
         public override DbParameter GetParameter()
         {
-            return new SQLiteParameter(string.Format("{1}{0}", Left, ParamPrefix), dBType) { Value = RightValue };
+            return new SQLiteParameter(string.Format("{1}{0}", Left, ParamPrefix), DataType) { Value = RightValue };
         }
         
     }

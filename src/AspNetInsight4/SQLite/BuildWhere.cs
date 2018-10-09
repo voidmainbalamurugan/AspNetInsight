@@ -9,7 +9,7 @@ namespace AspNetInsight4.SQLite
     /// </summary>
     internal class BuildWhere
     {
-        private List<SimpleWhere> _lst = new List<SimpleWhere>();
+        readonly List<SimpleWhere> _lst = new List<SimpleWhere>();
         SimpleWhere _recent { get; set; }
         const string _and = " AND ";
         const string _or = " OR ";

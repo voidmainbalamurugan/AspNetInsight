@@ -14,7 +14,9 @@ namespace AspNetInsight4.Module
         /// see the following link: https://go.microsoft.com/?linkid=8101007
         /// </summary>
         #region IHttpHandler Members
-        private const string _cssResourceName = "AspNetInsight4.Content.si-insight-banner.css";
+        const string _cssResourceName = "AspNetInsight4.Content.si-insight-banner.css";
+        const string _contentType = "text/css";
+
         public bool IsReusable
         {
             // Return false in case your Managed Handler cannot be reused for another request.
@@ -56,7 +58,7 @@ namespace AspNetInsight4.Module
         public void ProcessRequest(HttpContext context)
         {
             var cssContent = _cssResourceName.GetFromResouce();
-            context.Response.ContentType = "text/css";
+            context.Response.ContentType = _contentType;
             context.Response.Write(cssContent);
             context.Response.Flush();
         }

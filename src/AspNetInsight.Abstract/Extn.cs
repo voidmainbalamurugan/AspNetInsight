@@ -31,8 +31,11 @@ namespace AspNetInsight
             lock (@this)
             {
                 @this.Recent = current;
-                @this.Min = @this.Min == -1 ? @this.Recent : @this.Min > @this.Recent ? @this.Recent : @this.Min;
-                @this.Max = @this.Max == -1 ? @this.Recent : @this.Max < @this.Recent ? @this.Recent : @this.Max;
+                if (Math.Abs(@this.Min - double.MinValue) < double.Epsilon || @this.Min > @this.Recent)
+                    @this.Min = @this.Recent;
+
+                if (Math.Abs(@this.Max - double.MinValue) < double.Epsilon || @this.Max < @this.Recent)
+                    @this.Max = @this.Recent;
 
                 @this.Avg = @this.Total == 0 ? @this.Recent : ((@this.Total * @this.Avg) + @this.Recent) / (@this.Total + 1);
                 @this.Total += 1;
@@ -47,7 +50,7 @@ namespace AspNetInsight
         public static App GetAppDetails(this HttpContext ctx)
         {
             if (ctx == null)
-                throw new NullReferenceException(nameof(ctx));
+                throw new ArgumentNullException(nameof(ctx));
 
             return new App()
             {
@@ -65,13 +68,19 @@ namespace AspNetInsight
         /// <returns></returns>
         public static Dictionary<string, string> GetDataAsKvp(this BasicSts data)
         {
+            string _min = nameof(BasicSts.Min).ToUpper();
+            string _avg = nameof(BasicSts.Avg).ToUpper();
+            string _max = nameof(BasicSts.Max).ToUpper();
+            string _total = nameof(BasicSts.Total).ToUpper();
+            string _recent = nameof(BasicSts.Recent).ToUpper();
+
             return new Dictionary<string, string>()
             {
-                { "MIN", Math.Round(data.Min, 2).ToString() },
-                { "AVG", Math.Round(data.Avg, 2).ToString() },
-                { "MAX", Math.Round(data.Max, 2).ToString() },
-                { "TOTAL", data.Total.ToString() },
-                { "RECENT", Math.Round(data.Recent, 2).ToString() }
+                { _min, Math.Round(data.Min, 2).ToString() },
+                { _avg, Math.Round(data.Avg, 2).ToString() },
+                { _max, Math.Round(data.Max, 2).ToString() },
+                { _total, data.Total.ToString() },
+                { _recent, Math.Round(data.Recent, 2).ToString() }
             };
         }
 

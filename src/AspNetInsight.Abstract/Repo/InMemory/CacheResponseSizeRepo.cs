@@ -12,10 +12,10 @@ namespace AspNetInsight.Repo
     /// </summary>
     public class CacheResponseSizeRepo : IResponseRepo<AppResponseSize>
     {
-        private static long _responseSizeid = 1;
-        private IAppRepo _appRepo;
+        static long _responseSizeid = 1;
+        IAppRepo _appRepo;
 
-        private ConcurrentBag<AppResponseSize> ThisRepo
+        ConcurrentBag<AppResponseSize> ThisRepo
         {
             get
             {
@@ -37,7 +37,8 @@ namespace AspNetInsight.Repo
                 rt => rt.Id == id);
             if (rtsize.Any())
                 return rtsize.FirstOrDefault().DeepCopy();
-            return null;
+
+            return default(AppResponseSize);
         }
 
         public AppResponseSize GetAppDataById(long appId)
@@ -46,7 +47,7 @@ namespace AspNetInsight.Repo
                rt => rt.AppId == appId);
             if (rtsize.Any())
                 return rtsize.FirstOrDefault().DeepCopy();
-            return null;
+            return default(AppResponseSize);
         }
 
         public AppResponseSize AddAppData(AppResponseSize appData)
@@ -61,7 +62,7 @@ namespace AspNetInsight.Repo
             return data;
         }
 
-        public AppResponseSize UpdateRecentByAppId(long appId, double recentSize)
+        public AppResponseSize UpdateRecentByAppId(long appId, double recent)
         {
             var app = _appRepo.GetApp(appId);
             if (app == null)
@@ -81,10 +82,10 @@ namespace AspNetInsight.Repo
                         AppId = appId,
                         Id = _responseSizeid++,
                         ApplicationDetails = app,
-                        Recent = recentSize,
-                        Min = recentSize,
-                        Avg = recentSize,
-                        Max = recentSize,
+                        Recent = recent,
+                        Min = recent,
+                        Avg = recent,
+                        Max = recent,
                         Scale = Size.Byte,
                         Total = 1,
                         ModifiedDate = DateTime.UtcNow
@@ -96,7 +97,7 @@ namespace AspNetInsight.Repo
                 else
                 {
                     rtn = cr.FirstOrDefault();
-                    rtn.Update(recentSize);
+                    rtn.Update(recent);
                 }
             }
 

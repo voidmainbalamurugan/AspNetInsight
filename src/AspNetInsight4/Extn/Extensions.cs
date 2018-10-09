@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace AspNetInsight4
 {
@@ -61,5 +62,11 @@ namespace AspNetInsight4
             }
             return rtn;
         }
+
+        internal static TimeSpan GetTimeSpan(this object value)
+        {
+            return TimeSpan.FromTicks(Convert.ToInt64(value));
+        }
+        
     }
 }

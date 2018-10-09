@@ -28,8 +28,8 @@ namespace AspNetInsight4.Repo
             nameof(ResponseLog.Scale), nameof(ResponseLog.CreatedOn)
         };
 
-        protected override int CreationOrder => 2;
-        protected override string TableDefinitionSQL 
+        public override int CreationOrder => 2;
+        public override string TableDefinitionSQL 
             => @"CREATE TABLE IF NOT EXISTS [ResponseLog] (
                   [Id] integer NOT NULL PRIMARY KEY AUTOINCREMENT
                 , [AppId] bigint  NOT NULL
@@ -45,7 +45,7 @@ namespace AspNetInsight4.Repo
                 , FOREIGN KEY ([AppId]) REFERENCES [AppDetails] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
                 );";
 
-        ICommandTextBuilder _commandHelper = new SQLiteCommon();
+        readonly ICommandTextBuilder _commandHelper = new SQLiteCommon();
         protected override ICommandTextBuilder CommandHelper => _commandHelper;
 
         public IEnumerable<ResponseLog> GetByAppId(long appId)
@@ -55,7 +55,7 @@ namespace AspNetInsight4.Repo
             if (data.Any())
                 return data.ToList();
 
-            return null;
+            return default(IEnumerable<ResponseLog>);
         }
 
         public IEnumerable<ResponseLog> GetByAppId(long appId, DateTime from, DateTime to)
@@ -67,7 +67,7 @@ namespace AspNetInsight4.Repo
             if (data.Any())
                 return data.ToList();
 
-            return null;
+            return default(IEnumerable<ResponseLog>);
         }
 
         public void Log(ResponseLog dataToLog)
@@ -113,7 +113,6 @@ namespace AspNetInsight4.Repo
 
             return new List<ColumnNameWithValue>()
             {
-                //entity.Id.GetFromValue(nameof(ResponseLog.Id), DbType.Int64),
                 entity.AppId.GetFromValue(nameof(ResponseLog.AppId), DbType.Int64),
                 entity.ResponseTime.GetFromValue(nameof(ResponseLog.ResponseTime), DbType.Double),
                 entity.HanlderExeTime.GetFromValue(nameof(ResponseLog.HanlderExeTime), DbType.Double),

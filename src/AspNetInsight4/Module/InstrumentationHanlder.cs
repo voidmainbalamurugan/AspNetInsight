@@ -14,9 +14,9 @@ namespace AspNetInsight4.Module
     /// </summary>
     public class InstrumentationHanlder : IInstrumentationHanlder
     {
-        private const string _prefix = "[T-";
-        private const string _prefixSize = "[S-";
-        private const string _suffix = "]";
+        const string _prefix = "[T-";
+        const string _prefixSize = "[S-";
+        const string _suffix = "]";
 
         IResponseInstrumentation _responseIntru { get; set; }
         IResponseBanner _banner { get; set; }
@@ -100,8 +100,8 @@ namespace AspNetInsight4.Module
 
             // Calculate handler exe time and update it in items collection
             app.Context.Items.Add(InstrumentKeys._t_Handlder,
-                (TimeSpan.FromTicks(Convert.ToInt64(app.Context.Items[InstrumentKeys._et_Handler])) -
-                 TimeSpan.FromTicks(Convert.ToInt64(app.Context.Items[InstrumentKeys._st_Handler]))
+                (app.Context.Items[InstrumentKeys._et_Handler].GetTimeSpan() -
+                 app.Context.Items[InstrumentKeys._st_Handler].GetTimeSpan()
                  ).TotalMilliseconds);
         }
 
@@ -151,5 +151,6 @@ namespace AspNetInsight4.Module
         {
             CssHandler.CanHandle(app);
         }
+                
     }
 }

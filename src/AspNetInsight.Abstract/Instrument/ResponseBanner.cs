@@ -18,8 +18,7 @@ namespace AspNetInsight
         protected const string _prefix = "[";
         protected const string _suffix = "]";
 
-        private ResponseBanner() { }
-        public ResponseBanner(string prefix = _prefix, string suffix = _suffix)
+        protected ResponseBanner(string prefix = _prefix, string suffix = _suffix)
         {
             Prefix = string.IsNullOrWhiteSpace(prefix) ? _prefix
                 : prefix;
@@ -34,18 +33,18 @@ namespace AspNetInsight
         /// </summary>
         /// <param name="data">live data to be used</param>
         /// <returns></returns>
-        public virtual string GeneratedBanner(BasicSts data)
+        public virtual string GeneratedBanner(BasicSts Data)
         {
             TemplateText = GetTemplateText();
-            return UpdateTemplate(data);
+            return UpdateTemplate(Data);
         }
 
-        private string UpdateTemplate(BasicSts data)
+        string UpdateTemplate(BasicSts data)
         {
-            if (string.IsNullOrWhiteSpace(TemplateText))
-                throw new ArgumentNullException(nameof(TemplateText));
+            if (data == default(BasicSts))
+                throw new ArgumentNullException(nameof(data));
 
-            var text = TemplateText.ToString();
+            var text = string.Copy(TemplateText);
             foreach(var kvp in data.GetDataAsKvp())
             {
                 text = text.Replace(Prefix + kvp.Key + Suffix, kvp.Value);

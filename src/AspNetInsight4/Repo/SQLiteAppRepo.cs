@@ -30,8 +30,8 @@ namespace AspNetInsight4.Repo
             nameof(App.MachineName), nameof(App.Url)
         };
 
-        protected override int CreationOrder => 0;
-        protected override string TableDefinitionSQL
+        public override int CreationOrder => 0;
+        public override string TableDefinitionSQL
         {
             get
             {
@@ -49,7 +49,7 @@ namespace AspNetInsight4.Repo
             }
         }
 
-        ICommandTextBuilder _commandHelper = new SQLiteCommon();
+        readonly ICommandTextBuilder _commandHelper = new SQLiteCommon();
         protected override ICommandTextBuilder CommandHelper => _commandHelper;
         
         public App GetApp(long id)
@@ -86,7 +86,7 @@ namespace AspNetInsight4.Repo
             if (app.Any())
                 return app.ToList();
 
-            return null;
+            return default(IEnumerable<App>);
         }
 
         public IEnumerable<App> GetAppByUrl(string url)
@@ -99,7 +99,7 @@ namespace AspNetInsight4.Repo
             if (app.Any())
                 return app.ToList();
 
-            return null;
+            return default(IEnumerable<App>);
         }
 
         public App New(App toAdd)
@@ -154,7 +154,6 @@ namespace AspNetInsight4.Repo
 
             return new List<ColumnNameWithValue>()
             {
-                //entity.Id.GetFromValue(nameof(App.Id), DbType.Int64),
                 entity.AppId.GetFromValue(nameof(App.AppId), DbType.String),
                 entity.AppName.GetFromValue(nameof(App.AppName), DbType.String),
                 entity.MachineName.GetFromValue(nameof(App.MachineName), DbType.String),

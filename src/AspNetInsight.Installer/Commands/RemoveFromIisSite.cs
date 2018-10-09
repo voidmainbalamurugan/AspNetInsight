@@ -13,8 +13,7 @@ namespace AspNetInsight.Installer
                 return false;
 
             var trm = parameter.TrimAll();
-            return trm == null ? false :
-                     trm.Length == 1;
+            return trm != null && trm.Length == 1;
         }
 
         public override Action<object> Exec => (values) =>

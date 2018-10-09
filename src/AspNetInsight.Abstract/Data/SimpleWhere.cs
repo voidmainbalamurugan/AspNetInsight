@@ -12,20 +12,20 @@ namespace AspNetInsight.Data
     {
         public string Left { get; set; }
         public string Operator { get; set; }
-        public DbType dBType { get; set; }
+        public DbType DataType { get; set; }
         public object RightValue { get; set; }
         public bool IsEnd { get; set; }
         public string NextOp { get; set; }
         public const string ParamPrefix = "@s";
 
-        public SimpleWhere(string left, string operand, DbType type, object right, bool end, string next = "")
+        protected SimpleWhere(string left, string operand, DbType type, object right, bool end, string next = "")
         {
             Left = string.IsNullOrWhiteSpace(left) ? throw new ArgumentNullException(nameof(left))
                 : left.Trim();
             Operator = string.IsNullOrWhiteSpace(operand) ? throw new ArgumentNullException(nameof(operand))
                 : operand.Trim();
 
-            dBType = type;
+            DataType = type;
 
             RightValue = right?? throw new ArgumentNullException(nameof(right));
             IsEnd = end;

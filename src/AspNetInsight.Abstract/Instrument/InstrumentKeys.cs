@@ -1,6 +1,6 @@
 ﻿namespace AspNetInsight
 {
-    public class InstrumentKeys
+    public static class InstrumentKeys
     {
         public const string _st_Handler = "_si_hanlder_st_";
         public const string _et_Handler = "_si_hanlder_et_";

@@ -14,7 +14,7 @@ namespace AspNetInsight
         /// <summary>
         /// Default values used, when there is no configuration found on the website
         /// </summary>
-        private static class Default
+        static class Default
         {
             public const string _dataProvider = "SqLite";
             public const string _connection = "insight_data";
@@ -27,7 +27,7 @@ namespace AspNetInsight
         /// <summary>
         /// Configuration keys
         /// </summary>
-        private static class Keys
+        static class Keys
         {
             public const string dataProvider = "DataProvider";
             public const string connection = "Connection";
@@ -73,7 +73,7 @@ namespace AspNetInsight
         public bool ShowBanner { get; set; }
 
         string _connectionPath { get; set; }
-        private string GetConnectionPath(string path)
+        string GetConnectionPath(string path)
         {
             var _path = path;
             if (!Directory.Exists(path))
@@ -87,20 +87,18 @@ namespace AspNetInsight
                     var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                         Default._connection);
 
-                    Directory.CreateDirectory(folder);
-                    _path = folder;
+                    _path = Directory.CreateDirectory(folder).FullName;
                 }
             }
 
             var dp = (Provider)Enum.Parse(typeof(Provider), DataProvider, true);
-            var fileName = Default._sdb;
             if (dp == Provider.InMemory)
                 return dp.ToString();
 
-            return string.Format("{0}{1}{2}", _path, Path.DirectorySeparatorChar, fileName);
+            return string.Format("{0}{1}{2}", _path, Path.DirectorySeparatorChar, Default._sdb);
         }
         
-        private InsightConfig()
+        InsightConfig()
         {
             DataProvider = GetConfigOr(Keys.dataProvider, Default._dataProvider);
             Connection = GetConfigOr(Keys.connection, "");
@@ -113,13 +111,13 @@ namespace AspNetInsight
             _connectionPath = GetConnectionPath(Connection);
         }
 
-        private string GetConfigOr(string key, string _default)
+        static string GetConfigOr(string key, string _default)
         {
             var val = WebConfigurationManager.AppSettings[key];
             return string.IsNullOrWhiteSpace(val) ? _default : val;
         }
 
-        private static InsightConfig _instance { get; set; }
+        static InsightConfig _instance { get; set; }
 
         /// <summary>
         /// Singleton instance of Insight config

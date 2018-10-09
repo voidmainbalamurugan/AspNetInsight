@@ -17,7 +17,7 @@ namespace AspNetInsight4.SQLite
 
         public override DbParameter GetParameter(string prefix = ParamPrefix4Update)
         {
-            return new SQLiteParameter(string.Format("{0}{1}", prefix,  Name), dBType) { Value = this.Value };
+            return new SQLiteParameter(string.Format("{0}{1}", prefix,  Name), DataType) { Value = this.Value };
         }
     }
 }

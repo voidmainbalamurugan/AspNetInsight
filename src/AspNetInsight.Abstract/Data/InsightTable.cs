@@ -19,8 +19,8 @@ namespace AspNetInsight.Data
         public abstract ReadOnlyCollection<string> Columns { get; }
         protected abstract TEntity GetFromRow(DataRow row);
         protected abstract List<ColumnNameWithValue> GetValues(TEntity entity);
-        protected abstract string TableDefinitionSQL { get; }
-        protected abstract int CreationOrder { get; }
+        public abstract string TableDefinitionSQL { get; }
+        public abstract int CreationOrder { get; }
         protected abstract ICommandTextBuilder CommandHelper { get; }
         protected abstract Database GetDb();
 
@@ -70,10 +70,11 @@ namespace AspNetInsight.Data
         public List<TEntity> UpdateAndGet(List<ColumnNameWithValue> values, List<SimpleWhere> filters = null)
         {
             var cmd = CommandHelper.GetUpdate(EntityName, values, filters);
-            var scmd = CommandHelper.GetSelect(EntityName, Columns.ToList(), filters);
-            cmd.CommandText += ";" + scmd.CommandText;
-            foreach (var sp in scmd.Parameters)
-                cmd.Parameters.Add(sp);
+            using (var scmd = CommandHelper.GetSelect(EntityName, Columns.ToList(), filters))
+            {
+                cmd.CommandText += ";" + scmd.CommandText;
+                cmd.Parameters.AddRange(scmd.Parameters.OfType<DbParameter>().ToArray());
+            }
             return ExecuteAndGetData(cmd);    
         }
 
@@ -130,12 +131,12 @@ namespace AspNetInsight.Data
                 }
             }
             if (dt == null)
-                return null;
-            List<TEntity> lst = new List<TEntity>();
+                return default(List<TEntity>);
+
+            var lst = new List<TEntity>();
             foreach (DataRow r in dt.Rows)
-            {
                 lst.Add(GetFromRow(r));
-            }
+            
             return lst;
         }
     }
